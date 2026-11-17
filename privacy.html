@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Chính sách quyền riêng tư — Mầm</title>
-<meta name="description" content="Chính sách quyền riêng tư của Mầm: không tài khoản, không quảng cáo, không theo dõi; những gì bạn ghi ở trên máy của bạn.">
+<meta name="description" content="Chính sách quyền riêng tư của Mầm: không tài khoản, không theo dõi; những gì bạn ghi ở trên máy của bạn.">
 <meta name="theme-color" content="#F6F0E3" media="(prefers-color-scheme: light)">
 <meta name="theme-color" content="#191815" media="(prefers-color-scheme: dark)">
 <link rel="icon" type="image/png" href="favicon.png">
@@ -12,6 +12,8 @@
 <link rel="alternate" hreflang="vi" href="privacy.html">
 <link rel="alternate" hreflang="en" href="en/privacy.html">
 <link rel="stylesheet" href="assets/style.css">
+<script>try{var t=localStorage.getItem("mam-theme");if(t==="light"||t==="dark")document.documentElement.setAttribute("data-theme",t)}catch(e){}</script>
+<script src="assets/theme.js" defer></script>
 <meta property="og:type" content="article">
 <meta property="og:locale" content="vi_VN">
 <meta property="og:site_name" content="Mầm">
@@ -29,7 +31,14 @@
       <img src="assets/apple-touch-icon.png" alt="" width="40" height="40">
       <span>Mầm</span>
     </a>
-    <a class="lang" href="en/privacy.html" hreflang="en" lang="en">English</a>
+    <div class="tools">
+      <div class="mode" role="group" aria-label="Giao diện" hidden>
+        <button type="button" data-mode="light" aria-pressed="false" title="Sáng"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2.5v2M12 19.5v2M5.3 5.3l1.4 1.4M17.3 17.3l1.4 1.4M2.5 12h2M19.5 12h2M5.3 18.7l1.4-1.4M17.3 6.7l1.4-1.4"/></svg><span class="sr">Sáng</span></button>
+        <button type="button" data-mode="dark" aria-pressed="false" title="Tối"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 14.5A8 8 0 1 1 9.5 4a6.5 6.5 0 0 0 10.5 10.5z"/></svg><span class="sr">Tối</span></button>
+        <button type="button" data-mode="system" aria-pressed="false" title="Theo máy"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="6.5" y="2.5" width="11" height="19" rx="3"/><path d="M11 18.5h2"/></svg><span class="sr">Theo máy</span></button>
+      </div>
+      <a class="lang" href="en/privacy.html" hreflang="en" lang="en">English</a>
+    </div>
   </div>
 </header>
 
@@ -46,7 +55,7 @@
     <ul>
       <li>Không có tài khoản, không đăng nhập.</li>
       <li>Mầm không có máy chủ. Không gì bạn ghi được gửi cho nhà phát triển hay cho bên thứ ba nào.</li>
-      <li>Không quảng cáo, không công cụ phân tích hay theo dõi, không SDK của bên thứ ba thu thập dữ liệu.</li>
+      <li>Không công cụ phân tích hay theo dõi, không SDK của bên thứ ba thu thập dữ liệu.</li>
       <li>Nhà phát triển không nhìn thấy và không thể truy cập bất cứ điều gì bạn ghi trong Mầm.</li>
     </ul>
 
@@ -82,7 +91,7 @@
     <p>Mầm không thu thập dữ liệu của bất kỳ ai, kể cả trẻ em.</p>
 
     <h2>Trang web này</h2>
-    <p>Trang web của Mầm không dùng cookie, không dùng công cụ phân tích và không tải gì từ bên ngoài. Nơi lưu trữ trang (GitHub Pages) có thể ghi nhật ký truy cập kỹ thuật như địa chỉ IP theo chính sách của GitHub.</p>
+    <p>Trang web của Mầm không dùng cookie, không dùng công cụ phân tích và không tải gì từ bên ngoài. Nếu bạn chọn sáng hay tối ở đầu trang, lựa chọn đó chỉ được lưu trong trình duyệt của bạn. Nơi lưu trữ trang (GitHub Pages) có thể ghi nhật ký truy cập kỹ thuật như địa chỉ IP theo chính sách của GitHub.</p>
 
     <h2>Thay đổi chính sách</h2>
     <p>Nếu chính sách thay đổi, bản mới sẽ được đăng tại địa chỉ này cùng ngày hiệu lực mới. Nếu sau này Mầm thêm tính năng cần gửi dữ liệu ra khỏi máy, chính sách sẽ nói rõ trước khi tính năng đó có mặt.</p>

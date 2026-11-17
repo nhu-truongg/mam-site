@@ -24,7 +24,7 @@
 }
 
 :root {
-  color-scheme: light dark;
+  color-scheme: light;
   --page: #F6F0E3;        /* cream */
   --surface: #FCF9F2;     /* cards */
   --sunk: #EFE8D8;        /* quiet bands, chips */
@@ -34,6 +34,13 @@
   --on-accent: #FFFFFF;
   --ink: #2A2A22;
   --muted: #625D50;
+  --honey: #F4E3A1;       /* paleYellow */
+  --honey-ink: #7A5E12;
+  --clay: #F1D3BE;
+  --clay-ink: #8A4A26;
+  --sky: #D8E4E6;
+  --sky-ink: #345962;
+  --paper: #FFFDF6;
   --glow-1: rgba(182, 196, 154, 0.45);
   --glow-2: rgba(244, 227, 161, 0.55);
   --shadow-sm: 0 1px 2px rgba(42, 42, 34, 0.05), 0 4px 14px -6px rgba(42, 42, 34, 0.10);
@@ -44,8 +51,12 @@
   --body: "Nunito", ui-rounded, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
 }
 
+/* Dark: the device's choice, unless the visitor picked "Sáng"; or picked
+   "Tối" outright (assets/theme.js sets data-theme, like the app's
+   Sáng / Tối / Theo máy). The two blocks hold the same values. */
 @media (prefers-color-scheme: dark) {
-  :root {
+  :root:not([data-theme="light"]) {
+    color-scheme: dark;
     --page: #191815;
     --surface: #22201C;
     --sunk: #1E1D19;
@@ -55,11 +66,41 @@
     --on-accent: #191815;
     --ink: #F1EEE4;
     --muted: #B3AD9F;
+    --honey: #3B3422;
+    --honey-ink: #EBD38A;
+    --clay: #3A2A20;
+    --clay-ink: #EDB794;
+    --sky: #22302F;
+    --sky-ink: #A9CBD1;
+    --paper: #2A2823;
     --glow-1: rgba(110, 143, 75, 0.20);
     --glow-2: rgba(244, 227, 161, 0.07);
     --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.3), 0 6px 18px -8px rgba(0, 0, 0, 0.5);
     --shadow-lg: 0 2px 6px rgba(0, 0, 0, 0.3), 0 30px 60px -20px rgba(0, 0, 0, 0.7);
   }
+}
+:root[data-theme="dark"] {
+  color-scheme: dark;
+  --page: #191815;
+  --surface: #22201C;
+  --sunk: #1E1D19;
+  --tint: #252B20;
+  --accent: #B5D08A;
+  --leaf: #9DBA72;
+  --on-accent: #191815;
+  --ink: #F1EEE4;
+  --muted: #B3AD9F;
+  --honey: #3B3422;
+  --honey-ink: #EBD38A;
+  --clay: #3A2A20;
+  --clay-ink: #EDB794;
+  --sky: #22302F;
+  --sky-ink: #A9CBD1;
+  --paper: #2A2823;
+  --glow-1: rgba(110, 143, 75, 0.20);
+  --glow-2: rgba(244, 227, 161, 0.07);
+  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.3), 0 6px 18px -8px rgba(0, 0, 0, 0.5);
+  --shadow-lg: 0 2px 6px rgba(0, 0, 0, 0.3), 0 30px 60px -20px rgba(0, 0, 0, 0.7);
 }
 
 *, *::before, *::after { box-sizing: border-box; }
@@ -119,6 +160,23 @@ p { margin: 0 0 1em; text-wrap: pretty; }
   background: var(--surface); color: var(--ink); box-shadow: var(--shadow-sm);
 }
 .lang:hover { color: var(--accent); }
+.tools { display: flex; align-items: center; gap: 10px; }
+
+/* Sáng / Tối / Theo máy, like the app. Hidden until theme.js runs. */
+.mode { display: flex; gap: 2px; padding: 3px; border-radius: 999px;
+  background: var(--surface); box-shadow: var(--shadow-sm); }
+.mode[hidden] { display: none; }
+.mode button {
+  appearance: none; border: 0; margin: 0; cursor: pointer;
+  width: 34px; height: 30px; border-radius: 999px; display: grid; place-items: center;
+  background: transparent; color: var(--muted);
+}
+.mode button:hover { color: var(--ink); }
+.mode button[aria-pressed="true"] { background: var(--accent); color: var(--on-accent); }
+.mode svg { width: 17px; height: 17px; fill: none; stroke: currentColor; stroke-width: 2;
+  stroke-linecap: round; stroke-linejoin: round; }
+.sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+@media (max-width: 380px) { .brand span { display: none; } }
 
 /* Hero */
 .hero { padding: 32px 0 88px; position: relative; overflow: hidden; }
@@ -170,22 +228,105 @@ section { padding: 88px 0; }
 .section-intro { color: var(--muted); font-size: 1.1rem; max-width: 36em; margin-bottom: 36px; }
 .alt { background: var(--sunk); }
 
-/* Features */
-.cards { display: grid; gap: 18px; grid-template-columns: repeat(auto-fill, minmax(min(100%, 290px), 1fr)); }
+/* Features: a bento of tiles, most with a small picture of the app. */
 .card {
   background: var(--surface);
   border-radius: var(--radius);
   padding: 26px 26px 12px;
   box-shadow: var(--shadow-sm);
 }
-.card.green { background: var(--tint); box-shadow: none; }
-.cards .card h3::before {
-  content: ""; display: block; width: 10px; height: 10px; border-radius: 50% 0;
-  background: var(--leaf); margin-bottom: 14px; transform: rotate(45deg);
-}
-.card h3 { margin-bottom: 0.4em; }
 .card p, .card li { color: var(--muted); }
-.card .quote { font-style: italic; color: var(--accent); font-weight: 700; }
+
+.bento { display: grid; gap: 18px; grid-template-columns: 1fr; grid-auto-flow: dense; }
+@media (min-width: 640px) { .bento { grid-template-columns: repeat(2, 1fr); } .t-wide { grid-column: span 2; } }
+@media (min-width: 960px) {
+  .bento { grid-template-columns: repeat(3, 1fr); }
+  .t-tall { grid-row: span 2; }
+}
+.tile {
+  background: var(--surface); border-radius: var(--radius); box-shadow: var(--shadow-sm);
+  padding: 26px; display: flex; flex-direction: column; gap: 18px; position: relative; overflow: hidden;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+.tile:hover { transform: translateY(-3px); box-shadow: var(--shadow-lg); }
+@media (prefers-reduced-motion: reduce) { .tile { transition: none; } .tile:hover { transform: none; } }
+.tile h3 { margin: 0 0 0.3em; font-size: 1.3rem; }
+.tile p { margin: 0; color: var(--muted); }
+.tile .quote { font-style: italic; color: var(--accent); font-weight: 700; }
+.tile.t-green { background: var(--tint); }
+.t-split .icon { margin-bottom: 18px; }
+@media (min-width: 640px) { .t-wide.t-split { flex-direction: row; align-items: center; gap: 28px; }
+  .t-split > * { flex: 1 1 0; } }
+
+.icon { width: 48px; height: 48px; border-radius: 16px; display: grid; place-items: center; flex: none;
+  background: var(--sunk); color: var(--accent); }
+.icon svg { width: 24px; height: 24px; fill: none; stroke: currentColor; stroke-width: 2;
+  stroke-linecap: round; stroke-linejoin: round; }
+.i-honey { background: var(--honey); color: var(--honey-ink); }
+.i-clay { background: var(--clay); color: var(--clay-ink); }
+.i-sky { background: var(--sky); color: var(--sky-ink); }
+
+/* Lesson: a small page from the notebook. */
+.note { background: var(--paper); border-radius: 18px; padding: 18px 20px; box-shadow: var(--shadow-sm);
+  transform: rotate(-1.2deg); max-width: 420px; }
+.note b { display: block; font-family: var(--heading); font-weight: 800; color: var(--ink); font-size: 1.1rem; line-height: 1.3; }
+.note small { display: block; color: var(--muted); font-size: 0.85rem; font-weight: 700; margin-top: 10px; letter-spacing: 0.02em; }
+.note span { display: block; color: var(--ink); }
+.note .next { margin-top: 12px; background: var(--honey); color: var(--honey-ink); border-radius: 12px;
+  padding: 8px 12px; font-weight: 700; }
+@media (prefers-reduced-motion: reduce) { .note { transform: none; } }
+
+/* Check-in: the answers as chips, the first one chosen. */
+.answers { list-style: none; margin: 0; padding: 0; display: grid; gap: 8px; }
+.answers li { display: flex; align-items: center; gap: 10px; padding: 10px 14px; border-radius: 14px;
+  background: var(--sunk); color: var(--ink); font-weight: 700; font-size: 0.95rem; line-height: 1.3; }
+.answers li::before { content: ""; width: 10px; height: 10px; border-radius: 50%; flex: none; background: var(--dot); }
+.answers .a1 { --dot: var(--leaf); background: var(--tint); }
+.answers .a2 { --dot: #D9B23F; }
+.answers .a3 { --dot: var(--sky-ink); }
+.answers .a4 { --dot: var(--clay-ink); }
+.tile .points { align-self: flex-start; background: var(--accent); color: var(--on-accent); font-weight: 700;
+  font-size: 0.9rem; border-radius: 14px; padding: 6px 14px; line-height: 1.35; }
+
+/* Reminder: a notification that keeps the lesson private. */
+.notif { display: flex; gap: 12px; align-items: center; background: var(--paper); border-radius: 18px;
+  padding: 12px 14px; box-shadow: var(--shadow-sm); }
+.notif img { width: 34px; height: 34px; border-radius: 9px; flex: none; }
+.notif div { flex: 1; min-width: 0; font-size: 0.9rem; line-height: 1.35; color: var(--ink); }
+.notif b { display: flex; justify-content: space-between; gap: 8px; font-size: 0.85rem; }
+.notif b i { font-style: normal; font-weight: 400; color: var(--muted); }
+
+/* My corner: five pots, seed to bloom. */
+.pots { display: grid; grid-template-columns: repeat(5, 1fr); gap: 6px; margin: 0; padding: 0; list-style: none; }
+.pots li { display: flex; flex-direction: column; align-items: center; gap: 6px; text-align: center;
+  font-size: 0.78rem; font-weight: 700; color: var(--muted); line-height: 1.25; }
+.pots svg { width: 100%; max-width: 72px; height: auto; overflow: visible; }
+.pots .pot { fill: var(--clay-ink); }
+.pots .rim { fill: var(--clay-ink); opacity: 0.8; }
+.pots .soil { fill: #5A4636; }
+.pots .stem { stroke: var(--leaf); stroke-width: 3; fill: none; stroke-linecap: round; }
+.pots .lf { fill: var(--leaf); }
+.pots .bud { fill: #E9A9B4; }
+.pots .petal { fill: #F2B8C2; }
+.pots .heart { fill: var(--honey-ink); }
+
+/* Look back: the last 30 days. */
+.days { display: grid; grid-template-columns: repeat(10, 1fr); gap: 5px; max-width: 300px; }
+.days i { aspect-ratio: 1; border-radius: 5px; background: var(--sunk); }
+.days .d1 { background: color-mix(in srgb, var(--leaf) 40%, var(--sunk)); }
+.days .d2 { background: var(--leaf); }
+
+/* A look you like: the three themes as little screens. */
+.themes { display: flex; gap: 12px; }
+.mini { flex: 1; max-width: 92px; aspect-ratio: 0.62; border-radius: 14px; padding: 10px 8px;
+  display: flex; flex-direction: column; gap: 6px; box-shadow: var(--shadow-sm); background: var(--bg); }
+.mini i { display: block; height: 7px; border-radius: 4px; background: var(--fg); opacity: 0.85; }
+.mini i:nth-child(2) { width: 60%; opacity: 0.5; }
+.mini i.c { height: auto; flex: 1; border-radius: 9px; background: var(--card); opacity: 1; }
+.m-doi { --bg: #F6F0E3; --fg: #3E5B2C; --card: #E3E9D3; }
+.m-meo { --bg: #1D2318; --fg: #B5CC8A; --card: #2A3323; }
+.m-hoa { --bg: #F3EBDB; --fg: #4A3A30; --card: #EAF0DF;
+  background-image: radial-gradient(#D8CAB2 1px, transparent 1.2px); background-size: 7px 7px; }
 
 /* Steps: big numerals, no boxes. */
 .steps { list-style: none; padding: 0; margin: 0; display: grid; gap: 32px 28px;
